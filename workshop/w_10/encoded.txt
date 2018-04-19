@@ -1,0 +1,9 @@
+ Compound types are types that a programmer constructs from a language's
+ fundamental types and/or other compound types.  In C++11, compound types 
+ include pointers and references to existing types, enumerations of named 
+ constant values, arrays of objects of an existing type, classes and function
+ types.  C++FIDWLCL@AQM@ALCC@W@KF@G@QR@@KISDIP@VDKAWSDIP@VDKA(/W@C@W@KF@VQJ@DFM	RMLFMM@IU@AVLHUILC\HDK\JCQM@CDFLILQL@VDSDLIDGI@(/LKQM@VQDKADWAILGWDW\(/(/qMLVFMDUQ@WA@VFWLG@VQM@KJKCPKFQLJKQ\U@VLKA@QDLIqM@A@VFWLUQLJK(/LKFIPA@VDW@SL@RJCJK@ALH@KVLJKDIDWWD\VLKGJQMVQDQLFDKAA\KDHLFmemory
+ and shows how to allocate multi-dimensional arrays in both static and dynamic
+ memory.  The description of classes reviews class definitions, introduces
+ move-constructors and move-assignment operators and includes declarations of
+ special members such as bit fields, class variables and class functions.

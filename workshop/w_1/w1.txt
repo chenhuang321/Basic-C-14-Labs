@@ -1,0 +1,91 @@
+Script started on Sat 16 Jan 2016 03:06:46 PM EST
+chuang55@matrix:~/oop345/workshop/w_1> whoami
+chuang55
+chuang55@matrix:~/oop345/workshop/w_1> cat *.h *.cpp
+#pragma once
+#ifndef _SCTRING_H__
+#define _SCTRING_H__
+#include <iostream>
+#define MAX 3
+namespace w1 {
+	class CString {
+		char cstring[MAX + 1];
+	public:
+		CString();
+		CString(const char*);
+		void display(std::ostream&)const;
+	};
+	std::ostream& operator<<(std::ostream&, CString&);
+}
+#endif#pragma once
+#ifndef _PROCESS_H__
+#define _PROCESS_H__
+#include "CString.h"
+namespace w1 {
+	void process(const char* s) {
+		CString cs(s);
+		std::cout << cs << std::endl;
+	}
+}
+#endif#include "CString.h"
+using namespace std;
+namespace w1 {
+	CString::CString() {
+		cstring[0] = '\0';
+	}
+
+	CString::CString(const char* cs) {
+		int i;
+		if (cs == (char*)0)
+			cstring[0] = '\0';
+		else {
+			for (i = 0; i < MAX; i++) {
+				if (cs[i] != '\0') {
+					cstring[i] = cs[i];
+					continue;
+				}
+			}
+			cstring[MAX] = '\0';
+		}
+	}
+
+	void CString::display(std::ostream& os)const {
+		os << cstring;
+	}
+
+	ostream& operator<<(ostream& os, CString& cs) {
+		cs.display(os);
+		return os;
+	}
+}#include "process.h"
+using namespace std;
+
+int main(int argc, char* argv[], char* env[]) {
+	int arg;
+	cout << "Command Line: ";
+	for (arg = 0; arg < argc; arg++)
+		cout << argv[arg] << ' ';
+	cout << endl;
+	if (argc == 1) {
+		cerr << "Insufficient number of arguments (min 1)" << endl;
+		return 1;
+	}
+	cout << " Maximum number of characters stored : " << MAX << endl;
+	for (arg = 1; arg < argc; arg++) {
+		cout << arg - 1 << ": ";
+		w1::process(argv[arg]);
+	}
+	return 0;
+}chuang55@matrix:~/oop345/workshop/w_1> g++ -o w1 *.cpp
+chuang55@matrix:~/oop345/workshop/w_1> w1 oop345 btp305
+Command Line: w1 oop345 btp305 
+ Maximum number of characters stored : 3
+0: oop
+1: btp
+chuang55@matrix:~/oop345/workshop/w_1> w1
+Command Line: w1 
+Insufficient number of arguments (min 1)
+chuang55@matrix:~/oop345/workshop/w_1> exit
+exit
+
+Script done on Sat 16 Jan 2016 03:07:35 PM EST

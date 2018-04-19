@@ -1,0 +1,12 @@
+#!/bin/bash
+
+echo Please input the file name: 
+read fileName
+
+
+if [ $fileName != "w6.dat"  ]; then
+	echo "Cannot find '$fileName'!"
+else
+	echo "Debuging...std=\"c++11\""
+	w6 $fileName
+fi

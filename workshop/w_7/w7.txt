@@ -1,0 +1,176 @@
+Script started on Thu 03 Mar 2016 01:53:42 PM EST
+chuang55@matrix:~/oop345/workshop/w_7> whoami
+chuang55
+chuang55@matrix:~/oop345/workshop/w_7> whoami7 Sales.datg++ -o w7 -std=c++0x *.cpp
+chuang55@matrix:~/oop345/workshop/w_7> cat *.cpp
+#include "iProduct.h"
+#include <string>
+#include <iomanip>
+#define HST_RATE 0.13
+#define PST_RATE 0.08
+#define OUTPUT_WIDTH 10
+
+namespace w7 {
+	
+	// iProduct class implement start!
+    std::ostream& operator<<(std::ostream& os, const iProduct& rhs) {
+    	rhs.display(os);
+    	return os;
+	}
+	
+	iProduct* readProduct(std::ifstream& fileIn) {
+		iProduct* ptr_product;
+		if(!fileIn.fail()) {
+		    size_t proNo;
+		    double proCost;
+		    TAXTYPE rate;
+		    fileIn >> proNo >> proCost;
+		    std::string tmpLine;
+		    getline(fileIn, tmpLine);
+		    // Make the fileIn into the new line of the current file
+		    //std::cout << tmpLine << "\n";
+		    if(tmpLine[1] == 'H') {
+		    	//std::cout << "It's ok!\n";
+		    	rate = HST;
+		    	ptr_product = new TaxableProduct(proNo, proCost, rate);
+			}
+			else if(tmpLine[1] == 'P') {
+				rate = PST;
+				ptr_product = new TaxableProduct(proNo, proCost, rate);
+			}
+			else
+			    ptr_product = new Product(proNo, proCost);
+		}
+		return ptr_product;
+	}
+	
+	// Product class impelement start!
+	Product::Product() {
+		this->productNo = 0;
+		this->cost = 0;
+		// Default constructor function to set initialization
+	}
+	
+	Product::Product(size_t productNo, double cost) {
+		this->productNo = productNo;
+		this->cost = cost;
+		// Assignment operator to get values from parameters
+		if(this->cost < 0) {
+			this->cost = 0;
+		} // cost validation (cost should be greater equal than 0)
+	}
+	
+	double Product::getCharge() const {
+	    return this->cost;
+	}
+	
+	void Product::display(std::ostream& os) const {
+	    os << std::setw(OUTPUT_WIDTH) << std::right << this->productNo;
+		os << std::setw(OUTPUT_WIDTH) << std::right << std::fixed << std::setprecision(2) << this->cost;
+	} // Control the width of the console screen output
+	
+	// TaxableProduct class implement start!
+	TaxableProduct::TaxableProduct() : Product() {
+	    // default constructor
+	    // Initialize the parent class
+	}
+	
+	TaxableProduct::TaxableProduct(size_t proNo, double proCost, TAXTYPE proType) : Product(proNo, proCost) {
+		_type = proType;
+	}
+	
+	double TaxableProduct::getCharge() const {
+	    double TaxRate(0.00); // Set default value to zero
+	    if(_type == HST) {
+	    	TaxRate = HST_RATE;
+		}
+		else if(_type == PST) {
+			TaxRate = PST_RATE;
+		}
+		return Product::getCharge() * ( 1 + TaxRate); 
+		// Calculate the total value
+	}
+	
+	void TaxableProduct::display(std::ostream& os) const {
+		//std::cout << "It's ok!\n";
+	    Product::display(os);
+	    if(_type == HST) {
+	    	os << " HST";
+		}
+		else if(_type == PST) {
+			os << " PST";
+		}
+	}
+}
+#include "Sale.h"
+#include <iomanip>
+
+namespace w7 {
+	
+	Sale::Sale(const char* fileName) {
+	    this->vtorProducts.clear();
+	    std::ifstream fileIn;
+	    try {		
+		    fileIn.open(fileName);
+		    if(!fileIn.fail()) {
+		    	while(!fileIn.eof()) {
+		    		vtorProducts.push_back(readProduct(fileIn));
+				}
+			}
+			else {
+				throw "Failed to access the file, maybe the wrong permission?";
+			}
+	    }
+	    catch(const char* error_msg) {
+	    	std::cout << error_msg << "\n";
+		}
+	}
+	
+	void Sale::display(std::ostream& os)const {
+	    double total(0.00);
+		os << "Product No      Cost Taxable\n";
+		for(auto product : vtorProducts) {
+			total += product->getCharge();
+			if(product->getCharge() > 10) {
+		        product->display(os);
+			    os << "\n";
+		    }
+		}
+		os << "     " << "Total" << std::setw(10) << std::right << total;
+	}
+	
+}
+// Workshop 7 - STL Containers
+ // w7.cpp
+
+ #include <iostream>
+ #include <string>
+ #include "Sale.h"
+
+ int main(int argc, char** argv) {
+     if (argc != 2) {
+         std::cerr << argv[0] << ": incorrect number of arguments\n"; 
+         std::cerr << "Usage: " << argv[0] << " file_name\n";
+         return 1;
+     }
+
+     w7::Sale sale(argv[1]);
+     sale.display(std::cout);
+
+     std::cout << "\nPress any key to continue ... ";
+     std::cin.get();
+ }
+chuang55@matrix:~/oop345/workshop/w_7> w7 Sales.dat
+Product No      Cost Taxable
+     10012     34.56
+     10023     45.67 HST
+     10234     12.32 PST
+     10056     67.54
+     10029     54.12 HST
+     10034     96.30
+     Total    324.47
+Press any key to continue ... 
+chuang55@matrix:~/oop345/workshop/w_7> exit
+exit
+
+Script done on Thu 03 Mar 2016 01:54:23 PM EST

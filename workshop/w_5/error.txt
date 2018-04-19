@@ -1,0 +1,12 @@
+Message.cpp: In constructor ‘w5::Message::Message(std::ifstream&, char)’:
+Message.cpp:10:44: error: no matching function for call to ‘getline(std::ifstream&, std::string&, char&)’
+Message.cpp:10:44: note: candidates are:
+/usr/include/stdio.h:671:20: note: __ssize_t getline(char**, size_t*, FILE*)
+/usr/include/stdio.h:671:20: note:   no known conversion for argument 1 from ‘std::ifstream {aka std::basic_ifstream<char>}’ to ‘char**’
+/usr/include/c++/4.6/bits/basic_string.h:2734:5: note: template<class _CharT, class _Traits, class _Alloc> std::basic_istream<_CharT, _Traits>& std::getline(std::basic_istream<_CharT, _Traits>&, std::basic_string<_CharT, _Traits, _Alloc>&)
+/usr/include/c++/4.6/bits/basic_string.tcc:1070:5: note: template<class _CharT, class _Traits, class _Alloc> std::basic_istream<_CharT, _Traits>& std::getline(std::basic_istream<_CharT, _Traits>&, std::basic_string<_CharT, _Traits, _Alloc>&, _CharT)
+Message.cpp:15:70: error: expected ‘;’ before ‘)’ token
+Message.cpp:16:21: error: ‘struct w5::Tweet’ has no member named ‘msg’
+Message.cpp:19:15: error: ‘struct w5::Tweet’ has no member named ‘msg’
+Message.cpp: In member function ‘void w5::Message::display(std::ostream&) const’:
+Message.cpp:38:42: error: ‘const struct w5::Tweet’ has no member named ‘msg’
